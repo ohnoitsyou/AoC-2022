@@ -6,13 +6,6 @@ A = X = Rock
 B = Y = Paper
 C = Z = Scissors
 
-
-    0 1 2
-E/Y A B C
-0 X
-1 Y
-2 Z
-
 Part 2
 A = Rock; B = Paper; C = Scissors
 X = Lose; Y = Tie; Z = Win

@@ -21,6 +21,7 @@ class AoC22 : Runnable {
         if(sampleMode) { println("Running in sample mode") }
         One(sampleMode).solve()
         Two(sampleMode).solve()
+        Three(sampleMode).solve()
     }
 
     companion object {
