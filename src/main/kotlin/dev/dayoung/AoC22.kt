@@ -22,6 +22,7 @@ class AoC22 : Runnable {
         One(sampleMode).solve()
         Two(sampleMode).solve()
         Three(sampleMode).solve()
+        Four(sampleMode).solve()
     }
 
     companion object {
