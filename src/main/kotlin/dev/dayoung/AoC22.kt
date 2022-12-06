@@ -6,18 +6,20 @@ import picocli.CommandLine.Command
 import picocli.CommandLine.Option
 
 @Command(
-    name = "aoc-22", description = ["..."],
+    name = "aoc-22", description = ["Advent of Code 2022"],
     mixinStandardHelpOptions = true
 )
 class AoC22 : Runnable {
-    /*
-    @Option(names = ["-v", "--verbose"], description = ["..."])
-    private var verbose: Boolean = false
-     */
+    @Option(names = ["-v", "--version"], description = ["What version of the application this is"])
+    private var version: Boolean = false
     @Option(names = ["-s", "--sample"], description = ["Enable sample mode"])
     private var sampleMode: Boolean = false
 
     override fun run() {
+        if(version) {
+            println("Version 6.1")
+            return
+        }
         if(sampleMode) { println("Running in sample mode") }
         One(sampleMode).solve()
         Two(sampleMode).solve()
