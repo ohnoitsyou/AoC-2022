@@ -34,7 +34,7 @@ dependencies {
 
 
 application {
-    mainClass.set("dev.dayoung.Aoc22Command")
+    mainClass.set("dev.dayoung.AoC22")
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("11")

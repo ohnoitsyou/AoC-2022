@@ -19,7 +19,7 @@ class AoC22Test {
         val args = arrayOf("-v")
         PicocliRunner.run(AoC22::class.java, ctx, *args)
 
-        Assertions.assertTrue(baos.toString().contains("Hi!"))
+        Assertions.assertTrue(baos.toString().contains("Version 6.1"))
 
         ctx.close()
     }
