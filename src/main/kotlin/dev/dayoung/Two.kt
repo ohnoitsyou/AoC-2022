@@ -53,7 +53,7 @@ class Two(private val sampleMode: Boolean = false) {
         for(move in moves) {
             val subMove = move.split(" ")
             val input = subMove[0]
-            val result: Int = when(val outcome = subMove[1]) {
+            val result: Int = when(subMove[1]) {
                 "X" -> points["L"]!! + points[lose[input]]!!
                 "Y" -> points["T"]!! + points[tie[input]]!!
                 "Z" -> points["W"]!! + points[win[input]]!!
