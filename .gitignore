@@ -13,3 +13,7 @@ out/
 .settings
 .classpath
 .factorypath
+
+# Ignore inputs
+src/main/resources/**
+
