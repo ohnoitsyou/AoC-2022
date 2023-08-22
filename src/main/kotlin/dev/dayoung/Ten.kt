@@ -1,9 +1,8 @@
 package dev.dayoung
 
-import kotlin.math.sign
-
 typealias InstPair = Pair<Ten.CPU.Instructions, Int>
 typealias RegisterList = Map<String, Int>
+
 class Ten(sampleMode: Boolean) {
     class CPU(private var instructions: List<InstPair>) {
         enum class Instructions {
@@ -11,7 +10,7 @@ class Ten(sampleMode: Boolean) {
         }
 
         private val registers = mutableMapOf("x" to 1)
-        private var cycleCount = 0
+        var cycleCount = 0
         private var subCycle = 0
         private var current: InstPair = instructions.first()
 
@@ -20,8 +19,12 @@ class Ten(sampleMode: Boolean) {
 
         fun hasInstructions(): Boolean = instructions.isNotEmpty()
         fun cycle(): RegisterList {
-            if (instructions.isNotEmpty()) {
-                cycleCount++
+            val range = (registers["x"]!! - 1) .. (registers["x"]!! + 1)
+            if((cycleCount % 40) in range) print("#") else print(" ")
+            cycleCount++
+            if(cycleCount % 40 == 0) println()
+            val midCycleRegisters = signalStrength()
+            if (hasInstructions()) {
                 when(current.first) {
                     Instructions.NOOP -> {
                         instructions = instructions.drop(1)
@@ -39,7 +42,7 @@ class Ten(sampleMode: Boolean) {
                     }
                 }
             }
-            return signalStrength()
+            return midCycleRegisters
         }
         override fun toString(): String {
             return "CPU: Cycle: $cycleCount; SubCycle: $subCycle Registers: $registers"
@@ -55,9 +58,13 @@ class Ten(sampleMode: Boolean) {
     }
     fun solve() {
         val cpu = CPU(instructions)
+        var sum = 0
         while(cpu.hasInstructions()) {
-            cpu.cycle()
-            println(cpu)
+            val registers = cpu.cycle()
+            if(cpu.cycleCount in listOf(20, 60, 100, 140, 180, 220)) {
+                sum += registers["x"]!!
+            }
         }
+        println("Signal Strength: $sum")
     }
 }
