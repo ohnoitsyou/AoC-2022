@@ -1,7 +1,6 @@
 package dev.dayoung
 
 typealias InstPair = Pair<Ten.CPU.Instructions, Int>
-typealias RegisterList = Map<String, Int>
 
 class Ten(sampleMode: Boolean) {
     class CPU(private var instructions: List<InstPair>) {
@@ -9,45 +8,46 @@ class Ten(sampleMode: Boolean) {
             NOOP, ADDX
         }
 
-        private val registers = mutableMapOf("x" to 1)
+        private var spriteMidpoint = 1
         var cycleCount = 0
         private var subCycle = 0
-        private var current: InstPair = instructions.first()
+        private var currentInstruction = instructions.first()
 
-        private fun signalStrength(): RegisterList =
-            this.registers.map { (k, v) -> k to v * cycleCount }.toMap()
+        private fun signalStrength(): Int = this.spriteMidpoint * cycleCount
 
         fun hasInstructions(): Boolean = instructions.isNotEmpty()
-        fun cycle(): RegisterList {
-            val range = (registers["x"]!! - 1) .. (registers["x"]!! + 1)
+
+        fun cycle(): Int {
+            val range = (spriteMidpoint - 1) .. (spriteMidpoint + 1)
             if((cycleCount % 40) in range) print("#") else print(" ")
             cycleCount++
             if(cycleCount % 40 == 0) println()
-            val midCycleRegisters = signalStrength()
+            val midpointStrength = signalStrength()
             if (hasInstructions()) {
-                when(current.first) {
+                when(currentInstruction.first) {
                     Instructions.NOOP -> {
                         instructions = instructions.drop(1)
-                        current = if(hasInstructions()) instructions.first() else current
+                        currentInstruction = if(hasInstructions()) instructions.first() else currentInstruction
                     }
                     Instructions.ADDX -> {
                         if (subCycle == 1) {
-                            registers["x"] = registers["x"]!! + current.second
+                            spriteMidpoint +=  currentInstruction.second
                             subCycle = 0
                             instructions = instructions.drop(1)
-                            current = if(hasInstructions()) instructions.first() else current
+                            currentInstruction = if(hasInstructions()) instructions.first() else currentInstruction
                         } else {
                             subCycle++
                         }
                     }
                 }
             }
-            return midCycleRegisters
+            return midpointStrength
         }
         override fun toString(): String {
-            return "CPU: Cycle: $cycleCount; SubCycle: $subCycle Registers: $registers"
+            return "CPU: Cycle: $cycleCount; SubCycle: $subCycle Registers: $spriteMidpoint"
         }
     }
+
     private val content = Utils.readInputResource(sampleMode, "ten.txt")
     private val instructions = content.mapNotNull {
         when {
@@ -56,13 +56,14 @@ class Ten(sampleMode: Boolean) {
             else -> null
         }
     }
+
     fun solve() {
         val cpu = CPU(instructions)
         var sum = 0
         while(cpu.hasInstructions()) {
-            val registers = cpu.cycle()
+            val signalStrength = cpu.cycle()
             if(cpu.cycleCount in listOf(20, 60, 100, 140, 180, 220)) {
-                sum += registers["x"]!!
+                sum += signalStrength
             }
         }
         println("Signal Strength: $sum")

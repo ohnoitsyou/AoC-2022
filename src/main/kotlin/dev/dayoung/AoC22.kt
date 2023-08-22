@@ -17,7 +17,7 @@ class AoC22 : Runnable {
 
     override fun run() {
         if(version) {
-            println("Version 9.2")
+            println("Version 10.2")
             return
         }
         if(sampleMode) { println("Running in sample mode") }
@@ -30,6 +30,7 @@ class AoC22 : Runnable {
         Seven(sampleMode).solve()
         Eight(sampleMode).solve()
         Nine(sampleMode).solve()
+        Ten(sampleMode).solve()
     }
 
     companion object {
